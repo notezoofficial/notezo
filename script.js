@@ -16,8 +16,8 @@ const services = [
     id: "web",
     title: "Website Building",
     desc: "Professional, responsive websites tailored to your brand.",
-    price: 1000,
-    priceLabel: "₹1000+",
+    price: 999,
+    priceLabel: "₹999+",
     unit: "project",
     icon: "fas fa-laptop-code",
     color: "#22d3ee",
@@ -28,8 +28,8 @@ const services = [
     id: "poster",
     title: "Poster Design",
     desc: "Eye-catching posters for events, products, and promotions.",
-    price: 150,
-    priceLabel: "₹150+",
+    price: 149,
+    priceLabel: "₹149+",
     unit: "poster",
     icon: "fas fa-image",
     color: "#ec4899",
@@ -40,8 +40,8 @@ const services = [
     id: "logo",
     title: "Logo Design",
     desc: "Unique, memorable logos that define your brand identity.",
-    price: 100,
-    priceLabel: "₹100+",
+    price: 99,
+    priceLabel: "₹99+",
     unit: "logo",
     icon: "fas fa-pen-ruler",
     color: "#a855f7",
@@ -52,8 +52,8 @@ const services = [
     id: "social",
     title: "Social Media Post",
     desc: "Scroll-stopping designs for Instagram, Facebook & more.",
-    price: 100,
-    priceLabel: "₹100+",
+    price: 99,
+    priceLabel: "₹99+",
     unit: "post",
     icon: "fas fa-hashtag",
     color: "#f59e0b",
@@ -100,8 +100,8 @@ const services = [
     id: "excel",
     title: "Excel Works",
     desc: "Data entry, formatting, formulas, charts & spreadsheet automation.",
-    price: 100,
-    priceLabel: "₹100+",
+    price: 99,
+    priceLabel: "₹99+",
     unit: "project",
     icon: "fas fa-table",
     color: "#22c55e",
@@ -112,8 +112,8 @@ const services = [
     id: "resume",
     title: "Resume Building",
     desc: "Professional, ATS-friendly resumes that get you noticed.",
-    price: 50,
-    priceLabel: "₹50",
+    price: 49,
+    priceLabel: "₹49",
     unit: "resume",
     icon: "fas fa-id-card",
     color: "#e879f9",
@@ -131,31 +131,31 @@ const testimonials = [
     initials: "PS"
   },
   {
-    text: "Got my Tamil typing work done perfectly. Very affordable and the quality was outstanding. Will definitely order again!",
+    text: "Got my Tamil typing work done perfectly. Very affordable and the quality was outstanding. Will definitely order again!                ",
     name: "Karthik Raja",
     title: "Student, Coimbatore",
     rating: 5,
     initials: "KR"
   },
   {
-    text: "The logo design exceeded all expectations. NOTEZO understood my brand vision and delivered something truly unique.",
+    text: "The logo design exceeded all expectations. NOTEZO understood my brand vision and delivered something truly unique.                    ",
     name: "Ananya Menon",
     title: "Freelancer, Bangalore",
-    rating: 5,
+    rating: 4.8,
     initials: "AM"
   },
   {
-    text: "Resume was professionally done with great formatting. Got interview calls within a week. Amazing service!",
+    text: "Resume was professionally done with great formatting. Got interview calls within a week. Amazing service!                             ",
     name: "Vijay Kumar",
     title: "Job Seeker, Madurai",
     rating: 5,
     initials: "VK"
   },
   {
-    text: "Social media posts were on point — creative, engaging, and perfectly sized. My followers loved the content!",
+    text: "Social media posts were on point — creative, engaging, and perfectly sized. My followers loved the content!                           ",
     name: "Lakshmi Devi",
     title: "Influencer, Salem",
-    rating: 5,
+    rating: 4.5,
     initials: "LD"
   }
 ];
@@ -602,17 +602,25 @@ function initOrderForm() {
 // ============================================================
 function initContactForm() {
   const form = document.getElementById("contact-form");
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("c-name").value.trim();
+    const mobile = document.getElementById("c-mobile").value.trim();
     const email = document.getElementById("c-email").value.trim();
     const msg = document.getElementById("c-msg").value.trim();
-    if (!name || !email || !msg) { showToast("Please fill all fields.", "error"); return; }
-    showToast("Message sent! We'll get back to you soon.", "success");
+    if (!name || !email || !msg || !mobile) { showToast("Please fill all fields.", "error"); return; }
+
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "contact", name, mobile, email, message: msg })
+    });
+
+    showToast("Message sent! We'll reply soon. ✓", "success");
     form.reset();
   });
 }
-
 // ============================================================
 // SMOOTH SCROLL for anchors
 // ============================================================
