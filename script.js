@@ -119,6 +119,44 @@ const services = [
     color: "#e879f9",
     glow: "rgba(232,121,249,0.3)",
     badge: "Career"
+  },
+   {
+    id: "epf",
+    title: "EPF Services",
+    desc: "PF withdrawal, KYC update, passbook, claim status, and UAN support.",
+    price: 99,
+    priceLabel: "₹99+",
+    unit: "service",
+    icon: "fas fa-wallet",
+    color: "#22c55e",
+    glow: "rgba(34,197,94,0.3)",
+    badge: "Popular"
+  },
+
+  {
+    id: "tnega",
+    title: "TNeGA Services",
+    desc: "Community certificate, income certificate, nativity, and e-Sevai support.",
+    price: 79,
+    priceLabel: "₹79+",
+    unit: "application",
+    icon: "fas fa-id-card",
+    color: "#3b82f6",
+    glow: "rgba(59,130,246,0.3)",
+    badge: "Government"
+  },
+
+  {
+    id: "csc",
+    title: "CSC Services",
+    desc: "PAN card, Aadhaar update, bill payment, insurance, and online form services.",
+    price: 89,
+    priceLabel: "₹89+",
+    unit: "service",
+    icon: "fas fa-desktop",
+    color: "#f59e0b",
+    glow: "rgba(245,158,11,0.3)",
+    badge: "Digital"
   }
 ];
 
@@ -356,6 +394,21 @@ function renderServices() {
     observer.observe(el);
   });
 }
+function populateServiceDropdown() {
+  const select = document.getElementById("cust-service");
+
+  select.innerHTML = `
+    <option value="">Select Service</option>
+  `;
+
+  services.forEach(service => {
+    select.innerHTML += `
+      <option value="${service.title}">
+        ${service.title}
+      </option>
+    `;
+  });
+}
 
 function selectService(id) {
   const svc = services.find(s => s.id === id);
@@ -422,7 +475,7 @@ function renderTestimonials() {
   const track = document.getElementById("testimonials-track");
   track.innerHTML = testimonials.map(t => `
     <div class="testimonial-card">
-      <div class="stars">${"★".repeat(t.rating)}</div>
+      <div class="stars">${generateStars(t.rating)}</div>
       <p class="testimonial-text">"${t.text}"</p>
       <div class="testimonial-author">
         <div class="author-avatar">${t.initials}</div>
@@ -433,7 +486,12 @@ function renderTestimonials() {
       </div>
     </div>
   `).join("");
+function generateStars(rating) {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 !== 0;
 
+  return "★".repeat(fullStars) + (halfStar ? "⯪" : "");
+}
   const dotsContainer = document.getElementById("slider-dots");
   dotsContainer.innerHTML = testimonials.map((_, i) => `
     <button class="slider-dot ${i === 0 ? "active" : ""}" onclick="goToSlide(${i})"></button>
@@ -449,10 +507,11 @@ function renderTestimonials() {
   startAutoSlide();
 }
 
+
 function goToSlide(index) {
   sliderIndex = index;
   const track = document.getElementById("testimonials-track");
-  const cardWidth = track.querySelector(".testimonial-card")?.offsetWidth || 360;
+  const cardWidth = track.querySelector(".testimonial-card")?.clientWidth || 320;
   const gap = 24;
   track.style.transform = `translateX(-${index * (cardWidth + gap)}px)`;
   document.querySelectorAll(".slider-dot").forEach((d, i) => {
@@ -640,7 +699,10 @@ function startAnimations() {
   initNavbar();
   initTheme();
   initParticles();
+
   renderServices();
+  populateServiceDropdown();
+
   renderTestimonials();
   initScrollReveal();
   initModal();
